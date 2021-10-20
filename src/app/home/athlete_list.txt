@@ -1,0 +1,1 @@
+const athlete_list: string[] = ["abe-hifumi", "hamada-shori", "harasawa-hisayoshi", "mukai-shoichiro", "yoshida-tsukasa"]

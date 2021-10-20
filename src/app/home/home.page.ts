@@ -47,7 +47,7 @@ export class HomePage {
   grouping = async () => {
     // オブジェクトの生成
     const image_list: string[] = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg"];
-    const athlete_list: string[] = ["abe-hifumi", "hamada-shori", "harasawa-hisayoshi", "mukai-shotaro", "yoshida-tsukasa"]
+    const athlete_list: string[] = ["abe-hifumi", "hamada-shori", "harasawa-hisayoshi", "mukai-shoichiro", "yoshida-tsukasa"]
     const base_url: string = 'https://kn46itblog.com/hackathon/kdghacks_2021/images/';
     let person_dictionary: any = {}
 
@@ -145,6 +145,7 @@ export class HomePage {
     let blob = this.makeblob(this.athlete_test);
     this.httpService.httpFaceApiBinary(url, blob).subscribe(
       res => {
+        // Identify
         let url: string = environment.endpoint + 'identify';
         const body = {
           "faceIds": [res[0]["faceId"]],
@@ -154,6 +155,7 @@ export class HomePage {
         }
         this.httpService.httpFaceApi(url, body).subscribe(
           res => {
+            // Get User Information
             // console.log(res);
             let personId: string = res[0]['candidates'][0]['personId']
             const url: string = environment.endpoint + 'persongroups/' + group_id + '/persons/' + personId;
@@ -168,28 +170,6 @@ export class HomePage {
         );
       }
     );
-    // Identify
-
-    // Get User Information
-
-    /*
-    async function IdentifyInPersonGroup() {
-      // Detect faces from source image url.
-      let source_image_file_name = "identification1.jpg";
-      let face_ids = (await DetectFaceRecognize(
-        image_base_url + source_image_file_name
-      )).map (face => face.faceId);
-  
-      // Identify the faces in a person group.
-      let results = await client.face.identify(face_ids, { personGroupId : person_group_id});
-
-      // UUIDを使わないのであれば、personIdからの再取得はいらない？かも
-      await Promise.all (results.map (async function (result) {
-          let person = await client.personGroupPerson.get(person_group_id, result.candidates[0].personId);
-      }));
-      console.log();
-    }
-    */
   }
 
   private makeblob(dataURL) {
